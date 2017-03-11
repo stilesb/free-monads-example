@@ -82,10 +82,10 @@ program5 = subroutine1 `catch` (\_ -> Fix (Bell (Fix Done)) :: FixE (Toy Char) e
 data Free f r = Free (f (Free f r)) | Pure r
 
 instance Functor f => Applicative (Free f) where
-  pure = Pure
-  Pure a <*> Pure b = Pure $ a b
+  pure               = Pure
+  Pure a <*> Pure b  = Pure $ a b
   Pure a <*> Free mb = Free $ fmap a <$> mb
-  Free ma <*> b = Free $ (<*> b) <$> ma
+  Free ma <*> b      = Free $ (<*> b) <$> ma
 
 instance Functor f => Functor (Free f) where
   fmap f (Pure a)  = Pure (f a)

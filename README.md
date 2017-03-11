@@ -2,7 +2,7 @@
 
 # free-monads-example
 
-*Code inspired by Gabriel Gonzalez's fantastic <a href="http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html" target="_blank">article</a> on <a href="http://typelevel.org/cats/datatypes/freemonad.html">free monads</a>*
+*Code inspired by Gabriel Gonzalez's fantastic <a href="http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html" target="_blank">article</a> on <a href="http://hackage.haskell.org/package/free-2.0.3">free monads</a>*
 
 ## Setup
 
