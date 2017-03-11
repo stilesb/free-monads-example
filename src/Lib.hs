@@ -1,5 +1,7 @@
 module Lib where
 
+import           Control.Exception.Base (throwIO)
+
 data Toy b next = Output b next
                 | Bell next
                 | Done
@@ -151,3 +153,17 @@ interpreter1 = putStrLn (showProgram program7)
       output 'B'
       output 'C'
       bell
+
+-- Great, now let's create a pretty printer
+pretty :: (Show a, Show r) => Free (Toy a) r -> IO ()
+pretty = putStr . showProgram
+
+ringBell :: IO ()
+ringBell = putStrLn "Ding!"
+
+-- And an interpreter
+interpret :: (Show b) => Free (Toy b) r -> IO ()
+interpret (Free (Output b x)) = print b  >> interpret x
+interpret (Free (Bell     x)) = ringBell >> interpret x
+interpret (Free  Done       ) = return ()
+interpret (Pure r)            = throwIO (userError "Improper termination")
