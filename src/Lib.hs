@@ -1,9 +1,5 @@
 module Lib where
 
-import           Control.Applicative
-import           Control.Monad
-import           Data.Functor
-
 data Toy b next = Output b next
                 | Bell next
                 | Done
