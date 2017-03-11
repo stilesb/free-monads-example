@@ -28,9 +28,9 @@ program3 = Fix' (Bell (Fix' (Output 'A' (Fix' Done))))
 -- λ > :t program3
 -- program3 :: Fix' (Toy Char)
 
--- Looks good so far, but this only works if we write code that always
--- terminates via `Done`. So how do we get around this functor chaining
--- limitation? One quick might be to throw an exception.
+-- Looks good, but this only works if we write code that always terminates
+-- via `Done`. One quick way to get around this functor chaining
+-- limitation is to throw an exception.
 data FixE f e = Fix (f (FixE f e)) | Throw e
 
 catch :: (Functor f) => FixE f e1 -> (e1 -> FixE f e2) -> FixE f e2
@@ -41,3 +41,37 @@ instance Functor (Toy b) where
     fmap f (Output x next) = Output x (f next)
     fmap f (Bell     next) = Bell     (f next)
     fmap f  Done           = Done
+
+data IncompleteException = IncompleteException
+
+type Subroutine = FixE (Toy Char) IncompleteException
+type Program = FixE (Toy Char) IncompleteException
+
+-- output 'A'
+-- throw IncompleteException
+subroutine0 :: Subroutine
+subroutine0 = Fix (Output 'A' (Throw IncompleteException))
+
+-- try {
+--     subroutine0
+-- } catch (IncompleteException) {
+--     bell
+--     done
+-- }
+program4 :: Program
+program4 = subroutine0 `catch` (\_ -> Fix (Bell (Fix Done)) :: FixE (Toy Char) e)
+
+subroutine1 :: Subroutine
+subroutine1 = Fix (Output 'A' (Fix (Output 'B' (Fix (Output 'C' (Throw IncompleteException))))))
+
+program5 = subroutine1 `catch` (\_ -> Fix (Bell (Fix Done)) :: FixE (Toy Char) e)
+
+-- Amazing! This works well for us. A few gripes though:
+--
+-- 1. Exceptions are not truly "Exceptional"
+-- 2. Some redundant code with `Program` and `Subroutine` being synonyms for the same type
+--
+-- How do we solve these issues?
+--
+-- As it turns out, `FixE` is actually a Free Monad.
+data Free f r = Free (f (Free f r)) | Pure r
