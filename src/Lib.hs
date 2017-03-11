@@ -44,12 +44,12 @@ instance Functor (Toy b) where
 
 data IncompleteException = IncompleteException
 
-type Subroutine = FixE (Toy Char) IncompleteException
-type Program = FixE (Toy Char) IncompleteException
+type Subroutine' = FixE (Toy Char) IncompleteException
+type Program' = FixE (Toy Char) IncompleteException
 
 -- output 'A'
 -- throw IncompleteException
-subroutine0 :: Subroutine
+subroutine0 :: Subroutine'
 subroutine0 = Fix (Output 'A' (Throw IncompleteException))
 
 -- try {
@@ -58,18 +58,19 @@ subroutine0 = Fix (Output 'A' (Throw IncompleteException))
 --     bell
 --     done
 -- }
-program4 :: Program
+program4 :: Program'
 program4 = subroutine0 `catch` (\_ -> Fix (Bell (Fix Done)) :: FixE (Toy Char) e)
 
-subroutine1 :: Subroutine
+subroutine1 :: Subroutine'
 subroutine1 = Fix (Output 'A' (Fix (Output 'B' (Fix (Output 'C' (Throw IncompleteException))))))
 
+program5 :: Program'
 program5 = subroutine1 `catch` (\_ -> Fix (Bell (Fix Done)) :: FixE (Toy Char) e)
 
 -- Amazing! This works well for us. A few gripes:
 --
 -- 1. Exceptions are not truly "Exceptional"
--- 2. Some redundant code with `Program` and `Subroutine` being synonyms for the same type
+-- 2. Some redundant code with `Program'` and `Subroutine'` being synonyms for the same type
 --
 -- How do we solve these issues?
 --
@@ -91,3 +92,36 @@ instance Functor f => Monad (Free f) where
     return         = Pure
     (Free x) >>= f = Free (fmap (>>= f) x)
     (Pure r) >>= f = f r
+
+-- `Free` allows us to do a lot more. We'll start by defining our program
+-- operations.
+output' :: a -> Free (Toy a) ()
+output' x = Free (Output x (Pure ()))
+
+bell' :: Free (Toy a) ()
+bell' = Free (Bell (Pure ()))
+
+done' :: Free (Toy a) r
+done' = Free Done
+
+-- Which can be generalized via a lift functor
+liftF :: (Functor f) => f r -> Free f r
+liftF command = Free (fmap Pure command)
+
+output x = liftF (Output x ())
+bell     = liftF (Bell     ())
+done     = liftF  Done
+
+type Subroutine = Free (Toy Char) ()
+type Program = Free (Toy Char) ()
+
+subroutine2 :: Subroutine
+subroutine2 = output 'A'
+
+program6 :: Subroutine
+program6 = do
+    subroutine2
+    bell
+    done
+
+
