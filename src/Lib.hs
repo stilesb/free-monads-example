@@ -130,7 +130,7 @@ interpreter0 = putStrLn (showProgram program6)
   where
     subroutine2 :: Subroutine
     subroutine2 = output 'A'
-    
+
     program6 :: Program
     program6 = do
         subroutine2
