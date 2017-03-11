@@ -37,7 +37,7 @@ interpreter0 = putStrLn (showProgram program6)
         done
 ```
 
-```bash
+```changelog
 λ > interpreter0
 output 'A'
 bell
@@ -55,7 +55,7 @@ interpreter1 = putStrLn (showProgram program7)
       bell
 ```
 
-```bash
+```changelog
 λ > interpreter1
 output 'A'
 output 'B'
