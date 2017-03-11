@@ -22,7 +22,7 @@
 
 ## Examples
 
-Run `stack ghci` to play with the examples:
+Run `stack ghci` to play with the example programs and interpreter:
 
 ```
 λ > interpreter0
