@@ -2,7 +2,7 @@
 
 # free-monads-example
 
-*Code for Gabriel Gonzalez's fantastic write up free monads *
+*Code for Gabriel Gonzalez's fantastic write up on free monads*
 
 ## Setup
 
