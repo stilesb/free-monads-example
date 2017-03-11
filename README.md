@@ -19,3 +19,14 @@
 **Docker**
 
 `make docker`
+
+## Examples
+
+Run `stack ghci` to play with the examples:
+
+```
+λ > interpreter0
+output 'A'
+bell
+done
+```

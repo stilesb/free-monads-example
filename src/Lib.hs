@@ -124,4 +124,15 @@ program6 = do
     bell
     done
 
+-- We have created a program with `do` notation for pure data.
+showProgram :: (Show a, Show r) => Free (Toy a) r -> String
+showProgram (Free (Output a x)) = "output " ++ show a ++ "\n" ++ showProgram x
+showProgram (Free (Bell x))     = "bell\n" ++ showProgram x
+showProgram (Free Done)         = "done\n"
+showProgram (Pure r)            = "return " ++ show r ++ "\n"
 
+interpreter0 = putStrLn (showProgram program6)
+-- λ > interpreter0
+-- output 'A'
+-- bell
+-- done
