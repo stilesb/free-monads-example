@@ -1,5 +1,9 @@
 module Lib where
 
+--import           Control.Monad
+--import           Data.Functor
+--import           Control.Monad.Free
+
 data Toy b next = Output b next
                 | Bell next
                 | Done
@@ -66,12 +70,18 @@ subroutine1 = Fix (Output 'A' (Fix (Output 'B' (Fix (Output 'C' (Throw Incomplet
 
 program5 = subroutine1 `catch` (\_ -> Fix (Bell (Fix Done)) :: FixE (Toy Char) e)
 
--- Amazing! This works well for us. A few gripes though:
+-- Amazing! This works well for us. A few gripes:
 --
 -- 1. Exceptions are not truly "Exceptional"
 -- 2. Some redundant code with `Program` and `Subroutine` being synonyms for the same type
 --
 -- How do we solve these issues?
 --
--- As it turns out, `FixE` is actually a Free Monad.
+-- As it turns out, `FixE` is actually a Free Monad. Let's look more
+-- closely to see what we can get out of looking around here.
 data Free f r = Free (f (Free f r)) | Pure r
+
+instance (Functor f) => Monad (Free f) where
+    return         = Pure
+    (Free x) >>= f = Free (fmap (>>= f) x)
+    (Pure r) >>= f = f r
