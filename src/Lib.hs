@@ -1,8 +1,8 @@
 module Lib where
 
---import           Control.Monad
---import           Data.Functor
---import           Control.Monad.Free
+import           Control.Applicative
+import           Control.Monad
+import           Data.Functor
 
 data Toy b next = Output b next
                 | Bell next
@@ -81,7 +81,17 @@ program5 = subroutine1 `catch` (\_ -> Fix (Bell (Fix Done)) :: FixE (Toy Char) e
 -- closely to see what we can get out of looking around here.
 data Free f r = Free (f (Free f r)) | Pure r
 
-instance (Functor f) => Monad (Free f) where
+instance Functor f => Applicative (Free f) where
+  pure = Pure
+  Pure a <*> Pure b = Pure $ a b
+  Pure a <*> Free mb = Free $ fmap a <$> mb
+  Free ma <*> b = Free $ (<*> b) <$> ma
+
+instance Functor f => Functor (Free f) where
+  fmap f (Pure a)  = Pure (f a)
+  fmap f (Free fa) = Free (fmap f <$> fa)
+
+instance Functor f => Monad (Free f) where
     return         = Pure
     (Free x) >>= f = Free (fmap (>>= f) x)
     (Pure r) >>= f = f r
