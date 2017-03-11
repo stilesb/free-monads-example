@@ -3,4 +3,4 @@ all:
 	@stack exec free-monads-example-exe
 
 docker:
-	@docker build .
+	@docker build -t stilesb/free-monads-example .
