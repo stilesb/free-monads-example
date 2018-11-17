@@ -1,8 +1,8 @@
-name:                free-monads-example
+name:                free-monads
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/stilesb/free-monads-example#readme
+homepage:            https://github.com/pindaroso/free-monads#readme
 license:             BSD3
 license-file:        LICENSE
 author:              Brandon Stiles
@@ -19,23 +19,23 @@ library
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
 
-executable free-monads-example-exe
+executable free-monads-exe
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
-                     , free-monads-example
+                     , free-monads
   default-language:    Haskell2010
 
-test-suite free-monads-example-test
+test-suite free-monads-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:       base
-                     , free-monads-example
+                     , free-monads
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/free-monads-example
+  location: https://github.com/githubuser/free-monads

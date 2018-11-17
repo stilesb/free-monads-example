@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/stilesb/free-monads-example.svg?branch=master)](https://travis-ci.org/stilesb/free-monads-example)
+[![Build Status](https://travis-ci.org/pindaroso/free-monads.svg?branch=master)](https://travis-ci.org/pindaroso/free-monads)
 
-# free-monads-example
+# free-monads
 
 *Code inspired by Gabriel Gonzalez's fantastic <a href="http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html" target="_blank">article</a> on <a href="http://hackage.haskell.org/package/free-2.0.3" target="_blank">free monads</a>*
 

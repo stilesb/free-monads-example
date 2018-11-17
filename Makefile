@@ -1,6 +1,6 @@
 all:
 	@stack build
-	@stack exec free-monads-example-exe
+	@stack exec free-monads-exe
 
 docker:
-	@docker build -t stilesb/free-monads-example .
+	@docker build -t pindaroso/free-monads .

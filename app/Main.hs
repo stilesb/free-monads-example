@@ -2,4 +2,4 @@ module Main where
 
 import           Lib ()
 
-main = putStrLn "free-monads-example"
+main = putStrLn "free-monads"
